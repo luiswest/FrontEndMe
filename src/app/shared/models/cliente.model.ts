@@ -1,0 +1,24 @@
+export class Cliente {
+    id? : number;
+    idCliente : string;
+    nombre : string;
+    apellido1 : string;
+    apellido2 : string;
+    telefono : string;
+    celular : string;
+    direccion : string;
+    correo  : string;
+    fechaIngreso? : Date;
+    constructor(c? : Cliente) {
+        this.id = c !== undefined ? c.id : 0;
+        this.idCliente = c !== undefined ? c.idCliente : '';
+        this.nombre = c !== undefined ? c.nombre : '';
+        this.apellido1 = c !== undefined ? c.apellido1 : '';
+        this.apellido2 = c !== undefined ? c.apellido2 : '';
+        this.telefono = c !== undefined ? c.telefono : '';
+        this.celular = c !== undefined ? c.celular : '';
+        this.direccion = c !== undefined ? c.direccion : '';
+        this.correo  = c !== undefined ? c.correo : '';
+        this.fechaIngreso = c !== undefined ? c.fechaIngreso : new Date();
+    }
+}
