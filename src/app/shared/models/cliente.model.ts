@@ -10,7 +10,8 @@ export class Cliente {
     correo  : string;
     fechaIngreso? : Date;
     constructor(c? : Cliente) {
-        this.id = c !== undefined ? c.id : 0;
+        if (c?.id !== undefined) this.id = c.id;
+//        this.id = c !== undefined ? c.id : 0;
         this.idCliente = c !== undefined ? c.idCliente : '';
         this.nombre = c !== undefined ? c.nombre : '';
         this.apellido1 = c !== undefined ? c.apellido1 : '';
@@ -19,6 +20,8 @@ export class Cliente {
         this.celular = c !== undefined ? c.celular : '';
         this.direccion = c !== undefined ? c.direccion : '';
         this.correo  = c !== undefined ? c.correo : '';
-        this.fechaIngreso = c !== undefined ? c.fechaIngreso : new Date();
+        if (c?.fechaIngreso !== undefined) {
+            this.fechaIngreso = c.fechaIngreso;
+        }
     }
 }
