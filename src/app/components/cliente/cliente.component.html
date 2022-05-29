@@ -94,10 +94,61 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          ...
+          <form [formGroup]="frmCliente" (ngSubmit)="onGuardar2();" id="frmCliente">
+              <div class="row mb-1">
+                <label for="idCliente" class="col-sm-3 col-form-label col-form-label-sm">Id Cliente</label>
+                <div class="col-sm-9">
+                  <input formControlName="idCliente" type="text"class="form-control form-control-sm" id="idCliente" placeholder="Id Cliente">
+                </div>
+              </div>
+              <div class="row mb-1">
+                <label for="nombre" class="col-sm-3 col-form-label col-form-label-sm">Nombre</label>
+                <div class="col-sm-9">
+                  <input formControlName="nombre" type="text" class="form-control form-control-sm" id="nombre" placeholder="Nombre">
+                </div>
+              </div>
+              <div class="row mb-1">
+                <label for="apellido1" class="col-sm-3 col-form-label col-form-label-sm">Apellido 1</label>
+                <div class="col-sm-9">
+                  <input formControlName="apellido1" type="text" class="form-control form-control-sm" id="apellido1" placeholder="Apellido 1">
+                </div>
+              </div>
+              <div class="row mb-1">
+                <label for="apellido2" class="col-sm-3 col-form-label col-form-label-sm">Apellido 2</label>
+                <div class="col-sm-9">
+                  <input formControlName="apellido2" type="text" class="form-control form-control-sm" id="apellido2" placeholder="Apellido2">
+                </div>
+              </div>
+              <div class="row mb-1">
+                <label for="telefono" class="col-sm-3 col-form-label col-form-label-sm">Teléfonos</label>
+                <div class="col-sm-9">
+                  <div class="row">
+                    <div class="col-6">
+                      <input formControlName="telefono" type="tel" class="form-control form-control-sm" id="telefono" placeholder="Fijo">                  
+                    </div>
+                    <div class="col-6">
+                      <input formControlName="celular" type="tel" class="form-control form-control-sm" id="celular" placeholder="Celular">
+                    </div>                    
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-1">
+                <label for="correo" class="col-sm-3 col-form-label col-form-label-sm">Correo</label>
+                <div class="col-sm-9">
+                  <input formControlName="correo" type="mail" class="form-control form-control-sm" id="correo" placeholder="Correo">
+                </div>
+              </div>
+              <div class="row">
+                <label for="direccion" class="col-sm-3 col-form-label col-form-label-sm">Dirección</label>
+                <div class="col-sm-9">
+                  <textarea formControlName="direccion" class="form-control" id="direccion" placeholder="Dirección"></textarea>
+                </div>                
+              </div>
+              <input type="hidden" formControlName="id">
+          </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-outline-primary" (click)="onGuardar()">
+          <button type="submit" class="btn btn-outline-primary" form="frmCliente" >
               <fa-icon [icon]="['fas', 'floppy-disk']"></fa-icon> Guardar</button>
           <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">
             <fa-icon [icon]="['fas', 'xmark']"></fa-icon> Cancelar</button>          

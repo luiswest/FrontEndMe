@@ -1,7 +1,9 @@
-import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ClienteService } from 'src/app/shared/services/cliente.service';
 import  Swal  from 'sweetalert2';
 import { Cliente } from 'src/app/shared/models/cliente.model';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-cliente',
   templateUrl: './cliente.component.html',
@@ -12,19 +14,39 @@ export class ClienteComponent implements OnInit {
   filtro : any;
   clientes : any = [new Cliente()];
   cliente = new Cliente();
+  frmCliente : FormGroup;
   constructor(
-    private srvCliente : ClienteService
-  ) { }
+    private srvCliente : ClienteService,
+    private fb : FormBuilder
+  ) { 
+      this.frmCliente = this.fb.group({
+        id : [''],   //Esto lo colocamos cuando vamos a editar
+        idCliente : [''],
+        nombre : [''],
+        apellido1 : [''],
+        apellido2 : [''],
+        telefono : [''],
+        celular : [''],
+        correo : [''],
+        direccion : [''],
+      //  fechaIngreso : ['']
+      });
+  }
   //Eventos Botones Principal
   onNuevo() {
     this.titulo = 'Nuevo cliente';
+    this.frmCliente.reset(); //Poner esto después cuando se está editando
    // alert('Creando nuevo');
   }
   onEditar(id:number) {
     this.titulo = 'Editar cliente ' + id;
     this.srvCliente.buscar(id)
       .subscribe(
-        data => { console.log(data); }
+        data => { 
+          console.log(data);
+          delete data.fechaIngreso;  //esto es porque trae el campo de la bd
+          this.frmCliente.setValue(data);
+        }
       );    
     //alert('Editarndo');
   }
@@ -95,8 +117,58 @@ export class ClienteComponent implements OnInit {
     alert('Cerrando');
   }
   //Eventos botónes secundarios
+  onGuardar2() {
+    let llamado :Observable<any>;
+    let texto : string;
+    const datos = new Cliente(this.frmCliente.value);
+    if (datos.id) {
+      const id = datos.id;
+      delete datos.id;
+      delete datos.fechaIngreso;
+      llamado = this.srvCliente.guardar(datos, id);
+      texto = '¡Cambios guardados de forma correcta!';
+      // alert('editando');
+    } else {
+       delete datos.id;
+       llamado = this.srvCliente.guardar(datos)
+       texto = '¡Creado de forma correcta!'
+       //alert('creando nuevo')
+    }
+    llamado 
+    .subscribe({
+      complete: () => {
+                        this.filtrar();
+                        Swal.fire(texto, '', 'success') 
+                      },
+      error: (e) => {
+        switch (e) {
+            case 404 : {
+              Swal.fire({
+                title: 'Id Cliente no encontrado',
+                icon: 'error',
+                showCancelButton: true,
+                showConfirmButton:false,
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Cerrar'
+                });
+                break;              
+            }
+            case 409 : {
+              Swal.fire({
+                title: 'Id Cliente ya existe',
+                icon: 'error',
+                showCancelButton: true,
+                showConfirmButton:false,
+                cancelButtonColor: '#d33',
+                cancelButtonText: 'Cerrar'
+                })
+            }
+        }
+      }
+    });
+  }
   onGuardar() { //Esto completo después de hacer el formulario
-    const datos = new Cliente({
+    /*const datos = new Cliente({
       idCliente : '739367',
       nombre : 'María Luisa',
       apellido1: 'Cooper',
@@ -106,6 +178,8 @@ export class ClienteComponent implements OnInit {
       direccion: 'Cieneguita y Olivia',
       correo: 'marilu@gmail.com'
     })
+*/
+    const datos = new Cliente(this.frmCliente.value);
     this.srvCliente.guardar(datos)
       .subscribe({
         complete: () => {
@@ -118,7 +192,6 @@ export class ClienteComponent implements OnInit {
                 Swal.fire({
                   title: 'Id Cliente ya existe',
                   icon: 'error',
-                //  showDenyButton: true,
                   showCancelButton: true,
                   showConfirmButton:false,
                   cancelButtonColor: '#d33',
@@ -128,7 +201,6 @@ export class ClienteComponent implements OnInit {
           }
         }
       })
-   
   }
   filtrar() {
     this.srvCliente.filtrar(this.filtro, 1, 10)

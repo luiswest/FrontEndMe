@@ -12,6 +12,7 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { ArtefactoComponent } from './components/artefacto/artefacto.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -27,7 +28,9 @@ import { ArtefactoComponent } from './components/artefacto/artefacto.component';
     AppRoutingModule,
     FontAwesomeModule,
     SweetAlert2Module,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

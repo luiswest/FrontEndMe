@@ -45,7 +45,7 @@ export class ClienteService {
     }
   }
   eliminar(id : number) {
-    return this.http.delete<Cliente>(`http://tallerbd/cliente/${id}`)
+    return this.http.delete(`http://tallerbd/cliente/${id}`)
       .pipe(retry(1), catchError(this.handleError));    
   }
   private handleError(error: any) {
